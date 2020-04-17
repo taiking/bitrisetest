@@ -1,8 +1,5 @@
 package com.example.bitrise_test;
 
-import android.content.Context;
-import android.util.Log;
-
 import androidx.test.espresso.IdlingPolicies;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.idling.CountingIdlingResource;
@@ -22,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.junit.Assert.*;
 
@@ -41,23 +37,22 @@ public class ExampleInstrumentedTest {
 
     @Before
     public void registerIdlingResource() {
-//        idlingResource = activityRule.getActivity().getOrStoreIdlingResource();
-//        IdlingRegistry.getInstance().register(idlingResource);
-//        IdlingPolicies.setMasterPolicyTimeout(5, TimeUnit.MINUTES);
-//        IdlingPolicies.setIdlingResourceTimeout(5, TimeUnit.MINUTES);
+        idlingResource = activityRule.getActivity().getOrStoreIdlingResource();
+        IdlingRegistry.getInstance().register(idlingResource);
+        IdlingPolicies.setMasterPolicyTimeout(5, TimeUnit.MINUTES);
+        IdlingPolicies.setIdlingResourceTimeout(5, TimeUnit.MINUTES);
     }
 
     @Test
     public void playVideo() {
-//        onView(withId(R.id.button)).perform(click());
-//        assertThat(activityRule.getActivity().isFinished(), is(true));
-        assertThat(2+2, is(4));
+        onView(withId(R.id.button)).perform(click());
+        assertThat(activityRule.getActivity().isFinished(), is(true));
     }
 
     @After
     public void unregisterIdelingResouce() {
-//        if (idlingResource != null) {
-//            IdlingRegistry.getInstance().unregister(idlingResource);
-//        }
+        if (idlingResource != null) {
+            IdlingRegistry.getInstance().unregister(idlingResource);
+        }
     }
 }
