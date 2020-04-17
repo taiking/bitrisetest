@@ -43,8 +43,8 @@ public class ExampleInstrumentedTest {
     public void registerIdlingResource() {
         idlingResource = activityRule.getActivity().getOrStoreIdlingResource();
         IdlingRegistry.getInstance().register(idlingResource);
-        IdlingPolicies.setMasterPolicyTimeout(1, TimeUnit.MINUTES);
-        IdlingPolicies.setIdlingResourceTimeout(1, TimeUnit.MINUTES);
+        IdlingPolicies.setMasterPolicyTimeout(5, TimeUnit.MINUTES);
+        IdlingPolicies.setIdlingResourceTimeout(5, TimeUnit.MINUTES);
     }
 
     @Test
