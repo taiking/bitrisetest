@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailedToPlay(String groupId, String unitId, FluctErrorCode errorCode) {
                 Log.d("MainActivity", "onFailedToPlay");
+                isFinished = true;
+                getOrStoreIdlingResource().decrement();
             }
         });
         Button button = (Button) findViewById(R.id.button);

@@ -1,12 +1,28 @@
 package com.example.bitrise_test;
 
 import android.content.Context;
+import android.util.Log;
 
-import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.espresso.IdlingPolicies;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.idling.CountingIdlingResource;
+import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.is;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.concurrent.TimeUnit;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.junit.Assert.*;
 
@@ -17,11 +33,30 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    @Test
-    public void useAppContext() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    private CountingIdlingResource idlingResource;
 
-        assertEquals("com.example.bitrise_test", appContext.getPackageName());
+    @Rule
+    public ActivityTestRule<MainActivity> activityRule =
+            new ActivityTestRule<>(MainActivity.class);
+
+    @Before
+    public void registerIdlingResource() {
+        idlingResource = activityRule.getActivity().getOrStoreIdlingResource();
+        IdlingRegistry.getInstance().register(idlingResource);
+        IdlingPolicies.setMasterPolicyTimeout(1, TimeUnit.MINUTES);
+        IdlingPolicies.setIdlingResourceTimeout(1, TimeUnit.MINUTES);
+    }
+
+    @Test
+    public void playVideo() {
+        onView(withId(R.id.button)).perform(click());
+        assertThat(activityRule.getActivity().isFinished(), is(true));
+    }
+
+    @After
+    public void unregisterIdelingResouce() {
+        if (idlingResource != null) {
+            IdlingRegistry.getInstance().unregister(idlingResource);
+        }
     }
 }
